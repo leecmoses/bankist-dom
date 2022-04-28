@@ -81,3 +81,68 @@ document.querySelector(".nav__links").addEventListener("click", (e) => {
     document.querySelector(id).scrollIntoView({ behavior: "smooth" });
   }
 });
+
+// //////////////////
+// // DOM Traversing
+
+// const h1 = document.querySelector("h1");
+
+// // Going downwards: child
+// h1.querySelectorAll(".className");
+// h1.childNotes;
+// h1.children;
+// h1.firstElementChild.style.color = "white";
+// h1.lastElementChild.style.color = "orangered";
+
+// // Going upwards: parents
+// h1.parentNode;
+// h1.parentElement;
+
+// h1.closest(".header").style.background = "var(--gradient-secondary)";
+// h1.closest("h1").style.background = "var(--gradient-primary)";
+
+// // Going sideways: siblings
+// h1.previousElementSibling;
+// h1.nextElementSibling;
+
+// h1.previousSibling;
+// h1.nextSibling;
+
+// h1.parentElement.children;
+// [...h1.parentElement.children].forEach(function (el) {
+//   if (el !== h1) el.style.transform = "scale(0.5)";
+// });
+
+///////////////////////////////////////
+// Tabbed Component
+const tabs = document.querySelectorAll(".operations__tab");
+const tabsContainer = document.querySelector(".operations__tab-container");
+const tabsContent = document.querySelectorAll(".operations__content");
+
+// One way to add the event listeners but not the best way
+// tabs.forEach((tab) => tab.addEventListener("click", () => console.log("tab")));
+
+// Use event delegation
+tabsContainer.addEventListener("click", (e) => {
+  const clicked = e.target.closest(".operations__tab");
+
+  // Guard clause
+  if (!clicked) return;
+
+  // Remove active classes
+  tabs.forEach((tab) => {
+    tab.classList.remove("operations__tab--active");
+  });
+
+  tabsContent.forEach((tab) => {
+    tab.classList.remove("operations__content--active");
+  });
+
+  // Active tab
+  clicked.classList.add("operations__tab--active");
+
+  // Activate content area
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add("operations__content--active");
+});
