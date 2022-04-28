@@ -9,6 +9,10 @@ const btnCloseModal = document.querySelector(".btn--close-modal");
 const btnsOpenModal = document.querySelectorAll(".btn--show-modal");
 const btnScrollTo = document.querySelector(".btn--scroll-to");
 const section1 = document.querySelector("#section--1");
+const nav = document.querySelector(".nav");
+const tabs = document.querySelectorAll(".operations__tab");
+const tabsContainer = document.querySelector(".operations__tab-container");
+const tabsContent = document.querySelectorAll(".operations__content");
 
 const openModal = function (e) {
   e.preventDefault();
@@ -115,9 +119,6 @@ document.querySelector(".nav__links").addEventListener("click", (e) => {
 
 ///////////////////////////////////////
 // Tabbed Component
-const tabs = document.querySelectorAll(".operations__tab");
-const tabsContainer = document.querySelector(".operations__tab-container");
-const tabsContent = document.querySelectorAll(".operations__content");
 
 // One way to add the event listeners but not the best way
 // tabs.forEach((tab) => tab.addEventListener("click", () => console.log("tab")));
@@ -146,3 +147,48 @@ tabsContainer.addEventListener("click", (e) => {
     .querySelector(`.operations__content--${clicked.dataset.tab}`)
     .classList.add("operations__content--active");
 });
+
+///////////////////////////////////////
+// Menu Fade Animation
+
+// Option #1
+// const handleHover = (e, opacity) => {
+//   if (e.target.classList.contains("nav__link")) {
+//     const link = e.target;
+//     const siblings = link.closest(".nav").querySelectorAll(".nav__link");
+//     const logo = link.closest(".nav").querySelector("img");
+
+//     siblings.forEach((el) => {
+//       if (el !== link) {
+//         el.style.opacity = opacity;
+//       }
+//     });
+//     logo.style.opacity = opacity;
+//   }
+// };
+
+// Options # 2
+// Note: the handleHover function can no longer be an arrow function for the 'this' keyword to bind correctly
+const handleHover = function (e) {
+  if (e.target.classList.contains("nav__link")) {
+    const link = e.target;
+    const siblings = link.closest(".nav").querySelectorAll(".nav__link");
+    const logo = link.closest(".nav").querySelector("img");
+
+    siblings.forEach((el) => {
+      if (el !== link) {
+        el.style.opacity = this;
+      }
+    });
+    logo.style.opacity = this;
+  }
+};
+
+// Option #1: Have a callback function with a function inside
+// nav.addEventListener("mouseover", (e) => handleHover(e, 0.5));
+// nav.addEventListener("mouseout", (e) => handleHover(e, 1));
+
+// Option #2: Use bind method
+// The "argument" or this keyword is now the opacity value and the event currentTarget stays the same
+nav.addEventListener("mouseover", handleHover.bind(0.5));
+nav.addEventListener("mouseout", handleHover.bind(1));
